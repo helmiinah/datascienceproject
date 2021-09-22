@@ -26,6 +26,8 @@ def get_forecast():
 
     # Store hourly info to a time series dataframe
     df = pd.DataFrame(data=rows, index=indices)
+    df = df[["Total cloud cover (%)", "Air pressure (hPa)", "Precipitation amount (mm)",
+             "Air temperature (degC)", "Visibility (m)", "Wind direction (deg)", "Wind speed (m/s)"]] 
     return df
 
 
