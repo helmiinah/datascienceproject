@@ -7,10 +7,9 @@ from sklearn.model_selection import train_test_split, cross_val_score
 
 
 # Day by species, cells contain observation counts
-df = pd.read_csv("datascienceproject/data/haliasdata-2010-2019.csv")
-df = df.rename(columns={"Unnamed: 0": "Date"})
-birds_2019 = df.loc[(df["Date"] >= "2010-01-01")]
-birds_2019 = birds_2019.fillna(0)
+df = pd.read_csv("datascienceproject/data/haliasdata-2010-2019.csv").rename(columns={"Unnamed: 0": "Date"})
+birds_2019 = df.loc[(df["Date"] >= "2010-01-01")].fillna(0)
+
 
 # Day by weather variables
 df2 = pd.read_csv("datascienceproject/data/weather-2010-2019-cleaned.csv")
