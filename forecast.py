@@ -42,9 +42,3 @@ def get_daily_forecast(hourly_forecast):
                                             'Wind speed (m/s)': np.mean})
     df_daily = df_daily.round(1)
     return df_daily
-
-
-if __name__ == "__main__":
-    hourly = get_hourly_forecast()
-    daily = get_daily_forecast(hourly)
-    print(daily)
