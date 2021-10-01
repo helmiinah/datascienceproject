@@ -7,12 +7,12 @@ from sklearn.model_selection import train_test_split, cross_val_score
 
 
 # Day by species, cells contain observation counts
-df = pd.read_csv("datascienceproject/data/haliasdata-2010-2019.csv").rename(columns={"Unnamed: 0": "Date"})
+df = pd.read_csv("./data/haliasdata-2010-2019.csv").rename(columns={"Unnamed: 0": "Date"})
 birds_2019 = df.loc[(df["Date"] >= "2010-01-01")].fillna(0)
 
 
 # Day by weather variables
-df2 = pd.read_csv("datascienceproject/data/weather-2010-2019-cleaned.csv")
+df2 = pd.read_csv("./data/weather-2010-2019-cleaned.csv")
 weather_2019 = df2.loc[(df2["Date"] >= "2010-01-01")]
 
 # List of bird species in data
@@ -39,10 +39,10 @@ variables.remove("Date")
 
 # TRAIN
 
-first_column = birds_2019.filter(items=["Date", "talitiainen"])
+first_column = birds_2019.filter(items=["Date", "valkoposkihanhi"])
 merged = pd.merge(first_column, weather_2019, on="Date")
 
-X = merged["talitiainen"].values.reshape(-1, 1)
+X = merged["valkoposkihanhi"].values.reshape(-1, 1)
 y = merged["Precipitation amount (mm)"].values
 
 
