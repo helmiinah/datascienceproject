@@ -8,7 +8,7 @@ import numpy as np
 def get_hourly_forecast():
     start_time = dt.datetime.now()
     end_time = start_time + dt.timedelta(hours=58)
-    print(f"Getting weather forecast for {start_time} - {end_time}...\n")
+    print("Getting weather forecast for", start_time.strftime("%d/%m/%Y, %H:%M"), "-", end_time.strftime("%d/%m/%Y, %H:%M"), "...\n")
 
     # The weather forecast is streamed from the FMI open data and seems to give info about the upcoming ~58 hours
     futuredata = download_stored_query("fmi::forecast::harmonie::surface::point::multipointcoverage",
