@@ -6,13 +6,16 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300&display=swap" rel="stylesheet">
         <style>
+            body {
+                background-image: url("../static/sirittaja.jpg");
+                background-size: cover;
+                background-attachment: fixed;
+            }
             .content {
+                background: rgba(185, 197, 139, 0.5);
                 max-width: 900px;
                 margin: auto;
-                border: 2px solid #b9c58b;
-                border-radius: 5px;
                 padding: 25px;
-                background-color: #b9c58b;
                 overflow: hidden;
                 font-family: 'Titillium Web';
             }
@@ -39,6 +42,9 @@
                 font-family: 'Titillium Web';
                 text-align: center;
             }
+            .image {
+                padding-top: 20px
+            }
         </style>
     </head>
     <body>
@@ -56,12 +62,15 @@
                 </div>
             
                 <div class="float-child-right">
-                    {% block content %}
-                    <h4>Here are the ones with the biggest expected number!</h4>
-                    {{max_birds | safe}}
-                    {% endblock %}
-
-                    
+                    <div>
+                        {% block content %}
+                        <h4>Here are the ones with the biggest expected number!</h4>
+                        {{max_birds | safe}}
+                        {% endblock %}
+                    </div>
+                    <div class="image">
+                        <img src="../static/default_plot.png" width="80%" height="55%">
+                    </div>
                 </div>
             </div>
         </div>

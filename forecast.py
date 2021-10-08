@@ -41,4 +41,5 @@ def get_daily_forecast(hourly_forecast):
                                             'Visibility (m)': np.mean, 'Wind direction (deg)': np.mean,
                                             'Wind speed (m/s)': np.mean})
     df_daily = df_daily.round(1)
-    return df_daily
+    return df_daily.head(3)
+

@@ -55,3 +55,4 @@ def predict_birds():
     predictions = predictions.loc[:, (predictions != 0).any(axis=0)]
     return predictions
 
+
