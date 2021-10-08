@@ -55,11 +55,3 @@ def predict_birds():
     predictions = predictions.loc[:, (predictions != 0).any(axis=0)]
     return predictions
 
-
-if __name__ == "__main__":
-    t1 = dt.datetime.now()
-    predictions = predict_birds()
-    print(f"Found predictions for {predictions.shape[1]} birds: \n")
-    print(predictions)
-    t2 = dt.datetime.now()
-    print("\nTime spent:", t2 - t1)
