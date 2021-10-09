@@ -12,8 +12,8 @@
                 background-attachment: fixed;
             }
             .content {
-                background: rgba(185, 197, 139, 0.5);
-                max-width: 900px;
+                background: rgba(185, 197, 139, 0.6);
+                max-width: 1000px;
                 margin: auto;
                 padding: 25px;
                 overflow: hidden;
@@ -25,13 +25,13 @@
             }
 
             .float-child-left {
-                width: 30%;
+                width: 40%;
                 float: left;
                 padding: 10px;
                 margin: auto;
             } 
             .float-child-right {
-                width: 60%;
+                width: 50%;
                 float: right;
                 padding: 10px;
                 margin: auto;
@@ -42,9 +42,45 @@
                 font-family: 'Titillium Web';
                 text-align: center;
             }
-            .image {
-                padding-top: 20px
+            .dropbtn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
             }
+
+            /* The container <div> - needed to position the dropdown content */
+            .dropdown {
+            position: relative;
+            display: inline-block;
+            }
+
+            /* Dropdown Content (Hidden by Default) */
+            .dropdown-content {
+            display: none;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            }
+
+            /* Links inside the dropdown */
+            .dropdown-content a {
+            color: black;
+            padding: 5px 12px;
+            text-decoration: none;
+            display: block;
+            }
+
+            /* Change color of dropdown links on hover */
+            .dropdown-content a:hover {background-color: #ddd;}
+
+            /* Show the dropdown menu on hover */
+            .dropdown:hover .dropdown-content {display: block;}
+
+            /* Change the background color of the dropdown button when the dropdown content is shown */
+            .dropdown:hover .dropbtn {background-color: #3e8e41;}
         </style>
     </head>
     <body>
@@ -53,26 +89,35 @@
         
             <div class="float-container">
                 <div class="float-child-left">
-                    <h4>Found predictions for the following {{bird_number}} birds:</h4>
-                    <ul>
-                        {%for bird in bird_list%}
-                        <li><a href="/{{ bird }}">{{bird}}</a></li>
-                        {%endfor%}
-                    </ul>
+                    <h4>Found predictions for {{bird_number}} birds</h4>
+                    <div class="dropdown">
+                        <button class="dropbtn">Select a bird</button>
+                        <div class="dropdown-content">
+                            {%for bird in bird_list | sort%}
+                            <a onclick="showBirdPlot()">{{bird}}</a>
+                            {%endfor%}
+                        </div>
+                      </div>
+                      <img id="bird_plot" src="../static/haapana_plot.png" width="100%" height="55%" style="display: none; margin: auto;">
                 </div>
             
                 <div class="float-child-right">
                     <div>
-                        {% block content %}
-                        <h4>Here are the ones with the biggest expected number!</h4>
-                        {{max_birds | safe}}
-                        {% endblock %}
-                    </div>
-                    <div class="image">
-                        <img src="../static/default_plot.png" width="80%" height="55%">
+                        <h4>You are most likely to see these migratory birds in the following days:</h4>
+                        <img src="../static/default_plot.png" width="100%" height="65%">
                     </div>
                 </div>
             </div>
         </div>
     </body>
+    <script>
+        function showBirdPlot() {
+            var x = document.getElementById("bird_plot");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
 </html>
