@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>
             Bird Forecast
         </title>
@@ -40,6 +41,11 @@
                 margin: auto;
                 color: rgb(255, 255, 255);
                 font-family: 'Titillium Web';
+                text-align: center;
+                padding-bottom: 15px;
+            }
+            .subheader {
+                margin: auto;
                 text-align: center;
             }
             .dropbtn {
@@ -86,7 +92,18 @@
     <body>
         <div class="content">
             <h1 class="header"><i>Bird Forecast</i></h1>
-        
+            {% if star_rating == 3 %}
+                <h3 class="subheader">Today's star rating: &#9733;&#9733;&#9733;</h3>
+                <h3 class="subheader">It's a great day for birdwatching!</h3>
+            {% endif %}
+            {% if star_rating == 2 %}
+                <h3 class="subheader">Today's star rating: &#9733;&#9733;&#9734;</h3>
+                <h3 class="subheader">It's a good day for birdwatching!</h3>
+            {% endif %}
+            {% if star_rating == 1 %}
+                <h3 class="subheader">Today's star rating: &#9733;&#9734;&#9734;</h3>
+                <h3 class="subheader">Not the best day for birdwatching...</h3>
+            {% endif %}
             <div class="float-container">
                 <div class="float-child-left">
                     <h4>Found predictions for {{bird_number}} birds</h4>

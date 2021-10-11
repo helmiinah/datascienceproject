@@ -55,4 +55,11 @@ def predict_birds():
     predictions = predictions.loc[:, (predictions != 0).any(axis=0)]
     return predictions
 
-
+def get_star_bins():
+    df = pd.read_csv("data/haliasdata-2010-2019_new.csv", index_col=0).fillna(0)
+    sums = df.sum(axis=1)
+    sums = sums[sums != 0]
+    bins = pd.qcut(sums, 3, precision=0)
+    bins = sorted(list(bins.unique()))
+    bins[2] = pd.Interval(left=bins[2].left, right=np.inf)
+    return bins
