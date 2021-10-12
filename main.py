@@ -27,7 +27,7 @@ def generate_default_plot():
     diag = pd.Series(np.diag(max_birds), index=[max_birds.index, max_birds.columns])
     diag.index = diag.index.map(lambda t: t[0].strftime("%d-%m-%Y") + "\n" + str(t[1]))
     plot_def = diag.plot.bar(rot=0, ylabel="Predicted number of birds", color=["#264a0d", "#3c7812", "#5cad23"], title="     ")
-    plt.savefig('./static/default_plot.png', transparent=True)
+    plt.savefig('./static/plots/default_plot.png', transparent=True)
     return plot_def
 
 
@@ -36,7 +36,7 @@ def generate_plot(bird):
     bird_data = predictions[bird]
     bird_toplot = bird_data.rename(lambda x: x.strftime("%d-%m-%Y"))
     plot_bird = bird_toplot.plot.bar(rot=0, color=["#264a0d", "#3c7812", "#5cad23"], title=bird.capitalize())
-    plt.savefig(f'./static/{bird}_plot.png', transparent=True)
+    plt.savefig(f'./static/plots/{bird}_plot.png', transparent=True)
     return plot_bird
 
 
