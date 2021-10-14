@@ -1,15 +1,12 @@
 from fastapi import FastAPI, Request
 from fastapi.param_functions import File
-from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
 from requests.api import get
 from starlette.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import pandas as pd
-import datetime as dt
 from random_forest import predict_birds, get_star_bins
 import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
 
 # Run in terminal with the command uvicorn main:app
@@ -61,15 +58,11 @@ def get_star_rating():
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
     global predictions
-    global max_birds
     bird_list = list(predictions.columns)
-    birdcast = predictions.to_html()
     star_rating = get_star_rating()
     generate_all_plots()
     generate_default_plot()
     return templates.TemplateResponse("index.html", {"request": request,
-                                                     "birdcast": birdcast,
                                                      "bird_number": predictions.shape[1],
                                                      "bird_list": bird_list,
-                                                     "max_birds": max_birds.to_html(),
                                                      "star_rating": star_rating})
