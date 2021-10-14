@@ -105,7 +105,7 @@
                         <button class="dropbtn">Select a bird</button>
                         <div class="dropdown-content">
                             {%for bird in bird_list | sort%}
-                            <a onclick="showBirdPlot()">{{bird}}</a>
+                            <a id="bird_link" onclick="setBirdName('{{bird}}'); showBirdPlot();">{{bird}}</a>
                             {%endfor%}
                         </div>
                       </div>
@@ -126,9 +126,13 @@
             var x = document.getElementById("bird_plot");
             if (x.style.display === "none") {
                 x.style.display = "block";
-            } else {
-                x.style.display = "none";
             }
+        }
+        function setBirdName(bird) { 
+            var link = document.getElementById("bird_link");
+            var image = document.getElementById("bird_plot");
+            image.setAttribute("src",
+                "../static/plots/"+bird+"_plot.png");
         }
     </script>
 </html>

@@ -40,6 +40,15 @@ def generate_plot(bird):
     return plot_bird
 
 
+def generate_all_plots():
+    global predictions
+    for bird in predictions.columns:
+        bird_data = predictions[bird]
+        bird_toplot = bird_data.rename(lambda x: x.strftime("%d-%m-%Y"))
+        plot_bird = bird_toplot.plot.bar(rot=0, color=["#264a0d", "#3c7812", "#5cad23"], title=bird.capitalize())
+        plt.savefig(f'./static/plots/{bird}_plot.png', transparent=True)
+
+
 def get_star_rating():
     global predictions
     global star_bins
@@ -56,7 +65,7 @@ async def root(request: Request):
     bird_list = list(predictions.columns)
     birdcast = predictions.to_html()
     star_rating = get_star_rating()
-    generate_plot("haapana")
+    generate_all_plots()
     generate_default_plot()
     return templates.TemplateResponse("index.html", {"request": request,
                                                      "birdcast": birdcast,
