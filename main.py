@@ -14,18 +14,31 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 predictions = predict_birds().astype(int)
 star_bins = get_star_bins()
-max_birds = predictions[predictions.idxmax(axis=1)]
+max_birds = predictions.apply(lambda s: s.abs().nlargest(3).index.tolist(), axis=1)
+max_count = predictions.max().max()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 def generate_default_plot():
-    global predictions
     global max_birds
-    diag = pd.Series(np.diag(max_birds), index=[max_birds.index, max_birds.columns])
-    diag.index = diag.index.map(lambda t: t[0].strftime("%d-%m-%Y") + "\n" + str(t[1]))
-    plot_def = diag.plot.bar(rot=0, ylabel="Predicted number of birds", color=["#264a0d", "#3c7812", "#5cad23"], title="     ")
+    global max_count
+    global predictions
+
+    colors=["#264a0d", "#3c7812", "#5cad23"]
+
+    for i, row in enumerate(predictions.itertuples()):
+        birds = max_birds.loc[row[0]]
+        bird_series = predictions.loc[row[0]][birds]
+        y_pos = range(len(bird_series.index))
+        plt.subplot(1, 3, i+1)
+        plt.bar(bird_series.index, height=bird_series, color=colors[i])
+        plt.xticks(y_pos, bird_series.index, rotation=40)
+        plt.ylim(0, max_count+int(max_count/8))
+        plt.title(row[0].date())
+        if i > 0:
+            plt.yticks([])
+    plt.subplots_adjust(bottom=0.3)
     plt.savefig('./static/plots/default_plot.png', transparent=True)
-    return plot_def
 
 
 def generate_plot(bird):
