@@ -105,7 +105,7 @@
                         <button class="dropbtn">Select a bird</button>
                         <div class="dropdown-content">
                             {%for bird in bird_list | sort%}
-                            <a id="bird_link" onclick="setBirdName('{{bird}}'); showBirdPlot();">{{bird}}</a>
+                            <a id="bird_link" onclick="setBirdName('{{bird}}'); showBirdPlot();">{{bird[0]|upper}}{{bird[1:]}} / {{translations[bird]}}</a>
                             {%endfor%}
                         </div>
                       </div>

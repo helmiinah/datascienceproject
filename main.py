@@ -34,7 +34,7 @@ def generate_default_plot():
         y_pos = range(len(bird_series.index))
         plt.subplot(1, 3, i+1)
         plt.bar(bird_series.index, height=bird_series, color=colors[i])
-        plt.xticks(y_pos, bird_series.index, rotation=40)
+        plt.xticks(y_pos, [b.capitalize() for b in list(bird_series.index)], rotation=40)
         plt.ylim(0, max_count+int(max_count/8))
         plt.title(row[0].strftime("%d-%m-%Y"))
         if i > 0:
@@ -73,6 +73,7 @@ def get_star_rating():
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
     global predictions
+    global translations
     bird_list = list(predictions.columns)
     star_rating = get_star_rating()
     generate_all_plots()
@@ -80,4 +81,5 @@ async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request,
                                                      "bird_number": predictions.shape[1],
                                                      "bird_list": bird_list,
-                                                     "star_rating": star_rating})
+                                                     "star_rating": star_rating,
+                                                     "translations": translations})
