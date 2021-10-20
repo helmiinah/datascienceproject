@@ -42,7 +42,7 @@ def predict_birds():
         spec_bird = birds[species]
         X, y = weather, spec_bird
         model = RandomForestRegressor(n_estimators=150)
-        model.fit(X, y)
+        model.fit(X.values, y)
         for i in range(len(forecast.index)):
             pred_date = forecast.index[i]
             # UNCOMMENT next line if want to specify weather variables

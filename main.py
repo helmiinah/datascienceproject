@@ -6,6 +6,7 @@ from starlette.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import pandas as pd
 from random_forest import predict_birds, get_star_bins
+from translation import translation_dict
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -16,6 +17,7 @@ predictions = predict_birds().astype(int)
 star_bins = get_star_bins()
 max_birds = predictions.apply(lambda s: s.abs().nlargest(3).index.tolist(), axis=1)
 max_count = predictions.max().max()
+translations = translation_dict()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -34,7 +36,7 @@ def generate_default_plot():
         plt.bar(bird_series.index, height=bird_series, color=colors[i])
         plt.xticks(y_pos, bird_series.index, rotation=40)
         plt.ylim(0, max_count+int(max_count/8))
-        plt.title(row[0].date())
+        plt.title(row[0].strftime("%d-%m-%Y"))
         if i > 0:
             plt.yticks([])
     plt.subplots_adjust(bottom=0.3)
@@ -55,7 +57,7 @@ def generate_all_plots():
     for bird in predictions.columns:
         bird_data = predictions[bird]
         bird_toplot = bird_data.rename(lambda x: x.strftime("%d-%m-%Y"))
-        plot_bird = bird_toplot.plot.bar(rot=0, color=["#264a0d", "#3c7812", "#5cad23"], title=bird.capitalize())
+        plot_bird = bird_toplot.plot.bar(rot=0, color=["#264a0d", "#3c7812", "#5cad23"], title=f"{bird.capitalize()} / {translations[bird]}")
         plt.savefig(f'./static/plots/{bird}_plot.png', transparent=True)
 
 
