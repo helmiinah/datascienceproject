@@ -17,6 +17,10 @@ templates = Jinja2Templates(directory="templates")
 favicon_path = "static/favicon.ico"
 app.mount("/static", StaticFiles(directory="static"), name="static")
 predictions = pd.DataFrame()
+translations = {}
+star_bins = []
+star_rating = 0
+bird_list = []
 
 
 def generate_default_plot(predictions, max_birds, max_count, translations):
@@ -60,8 +64,21 @@ def get_star_rating(predictions, star_bins):
             return i + 1
 
 def predict():
+    print("Predicting...")
     global predictions
+    global translations
+    global star_bins
+    global star_rating
+    global bird_list
     predictions = predict_birds().astype(int)
+    translations = translation_dict()
+    star_bins = get_star_bins()
+    star_rating = get_star_rating(predictions, star_bins)
+    max_birds = predictions.apply(lambda s: s.abs().nlargest(3).index.tolist(), axis=1)
+    max_count = predictions.max().max()
+    generate_all_plots(predictions, translations)
+    generate_default_plot(predictions, max_birds, max_count, translations)
+    bird_list = list(predictions.columns)
     print("Predicted.")
 
 
@@ -74,14 +91,9 @@ async def loading(request: Request, background_tasks: BackgroundTasks):
 @app.get("/birdforecast", response_class=HTMLResponse)
 async def root(request: Request):
     global predictions
-    star_bins = get_star_bins()
-    max_birds = predictions.apply(lambda s: s.abs().nlargest(3).index.tolist(), axis=1)
-    max_count = predictions.max().max()
-    translations = translation_dict()
-    bird_list = list(predictions.columns)
-    star_rating = get_star_rating(predictions, star_bins)
-    generate_all_plots(predictions, translations)
-    generate_default_plot(predictions, max_birds, max_count, translations)
+    global translations
+    global star_rating
+    global bird_list
     return templates.TemplateResponse("index.html", {"request": request,
                                                      "bird_number": predictions.shape[1],
                                                      "bird_list": bird_list,
