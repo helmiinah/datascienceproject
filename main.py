@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.param_functions import File
 from fastapi.templating import Jinja2Templates
 from requests.api import get
-from starlette.responses import HTMLResponse, FileResponse
+from starlette.responses import HTMLResponse, FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 import pandas as pd
 from random_forest import predict_birds, get_star_bins
@@ -13,20 +13,11 @@ import numpy as np
 # Run in terminal with the command uvicorn main:app
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
-predictions = predict_birds().astype(int)
-star_bins = get_star_bins()
-max_birds = predictions.apply(lambda s: s.abs().nlargest(3).index.tolist(), axis=1)
-max_count = predictions.max().max()
-translations = translation_dict()
 favicon_path = "static/favicon.ico"
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-def generate_default_plot():
-    global max_birds
-    global max_count
-    global predictions
-
+def generate_default_plot(predictions, max_birds, max_count, translations):
     colors=["#264a0d", "#3c7812", "#5cad23"]
 
     for i, row in enumerate(predictions.itertuples()):
@@ -44,8 +35,7 @@ def generate_default_plot():
     plt.savefig('./static/plots/default_plot.png', transparent=True)
 
 
-def generate_plot(bird):
-    global predictions
+def generate_plot(bird, predictions):
     bird_data = predictions[bird]
     bird_toplot = bird_data.rename(lambda x: x.strftime("%d-%m-%Y"))
     plot_bird = bird_toplot.plot.bar(rot=0, color=["#264a0d", "#3c7812", "#5cad23"], title=bird.capitalize())
@@ -53,8 +43,7 @@ def generate_plot(bird):
     return plot_bird
 
 
-def generate_all_plots():
-    global predictions
+def generate_all_plots(predictions, translations):
     for bird in predictions.columns:
         bird_data = predictions[bird]
         bird_toplot = bird_data.rename(lambda x: x.strftime("%d-%m-%Y"))
@@ -62,23 +51,30 @@ def generate_all_plots():
         plt.savefig(f'./static/plots/{bird}_plot.png', transparent=True)
 
 
-def get_star_rating():
-    global predictions
-    global star_bins
+def get_star_rating(predictions, star_bins):
     today_sum = predictions.sum(axis=1)[0]
     for i in range(len(star_bins)):
         if today_sum in star_bins[i]:
             return i + 1
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.get('/')
+async def redirect():
+    response = RedirectResponse(url='/birdforecast')
+    return response
+
+
+@app.get("/birdforecast", response_class=HTMLResponse)
 async def root(request: Request):
-    global predictions
-    global translations
+    predictions = predict_birds().astype(int)
+    star_bins = get_star_bins()
+    max_birds = predictions.apply(lambda s: s.abs().nlargest(3).index.tolist(), axis=1)
+    max_count = predictions.max().max()
+    translations = translation_dict()
     bird_list = list(predictions.columns)
-    star_rating = get_star_rating()
-    generate_all_plots()
-    generate_default_plot()
+    star_rating = get_star_rating(predictions, star_bins)
+    generate_all_plots(predictions, translations)
+    generate_default_plot(predictions, max_birds, max_count, translations)
     return templates.TemplateResponse("index.html", {"request": request,
                                                      "bird_number": predictions.shape[1],
                                                      "bird_list": bird_list,
