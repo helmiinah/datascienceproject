@@ -1,0 +1,113 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            Bird Forecast
+        </title>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300&display=swap" rel="stylesheet">
+        <style>
+            body {
+                background-image: url("../static/sirittaja.jpg");
+                background-size: cover;
+                background-attachment: fixed;
+            }
+            .content {
+                background: rgba(185, 197, 139, 0.6);
+                max-width: 1000px;
+                margin: auto;
+                padding: 25px;
+                overflow: hidden;
+                font-family: 'Titillium Web';
+            }
+
+            .float-container {
+                padding: 20px;
+            }
+
+            .float-child-left {
+                width: 40%;
+                float: left;
+                padding: 10px;
+                margin: auto;
+            } 
+            .float-child-right {
+                width: 50%;
+                float: right;
+                padding: 10px;
+                margin: auto;
+            } 
+            .header {
+                margin: auto;
+                color: rgb(255, 255, 255);
+                font-family: 'Titillium Web';
+                text-align: center;
+                padding-bottom: 15px;
+            }
+            .subheader {
+                margin: auto;
+                text-align: center;
+            }
+            .dropbtn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            }
+
+            .dropdown {
+            position: relative;
+            display: inline-block;
+            }
+
+            .dropdown-content {
+            display: none;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            }
+
+            .dropdown-content a {
+            color: black;
+            padding: 5px 12px;
+            text-decoration: none;
+            display: block;
+            }
+
+            .dropdown-content a:hover {background-color: #ddd;}
+
+            .dropdown:hover .dropdown-content {display: block;}
+
+            .dropdown:hover .dropbtn {background-color: #3e8e41;}
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            <h1 class="header"><i>Bird Forecast</i></h1>
+            Predicting birds! This might take a couple of minutes...
+            <div id="counter">100</div>
+            <a href="/birdforecast" style="display: none; margin: auto;" id="redirect_button">
+                <button>Continue to app!</button>
+            </a>
+        </div>
+    </body>
+    <script>
+        setInterval(function() {
+            var div = document.querySelector("#counter");
+            var count = div.textContent * 1 - 1;
+            div.textContent = count;
+            if (count <= 0) {
+                showButton();
+            }
+        }, 1000);
+
+        function showButton() {
+            var x = document.getElementById("redirect_button");
+            if (x.style.display === "none") {
+                x.style.display = "inline";
+            }
+        }
+    </script>
+</html>

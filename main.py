@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+import time
+from fastapi import FastAPI, Request, BackgroundTasks
 from fastapi.param_functions import File
 from fastapi.templating import Jinja2Templates
 from requests.api import get
@@ -15,6 +16,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 favicon_path = "static/favicon.ico"
 app.mount("/static", StaticFiles(directory="static"), name="static")
+predictions = pd.DataFrame()
 
 
 def generate_default_plot(predictions, max_birds, max_count, translations):
@@ -57,16 +59,21 @@ def get_star_rating(predictions, star_bins):
         if today_sum in star_bins[i]:
             return i + 1
 
+def predict():
+    global predictions
+    predictions = predict_birds().astype(int)
+    print("Predicted.")
 
-@app.get('/')
-async def redirect():
-    response = RedirectResponse(url='/birdforecast')
-    return response
+
+@app.get('/', response_class=HTMLResponse)
+async def loading(request: Request, background_tasks: BackgroundTasks):
+    background_tasks.add_task(predict)
+    return templates.TemplateResponse("loading.html", {"request": request})
 
 
 @app.get("/birdforecast", response_class=HTMLResponse)
 async def root(request: Request):
-    predictions = predict_birds().astype(int)
+    global predictions
     star_bins = get_star_bins()
     max_birds = predictions.apply(lambda s: s.abs().nlargest(3).index.tolist(), axis=1)
     max_count = predictions.max().max()
