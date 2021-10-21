@@ -2,10 +2,10 @@ import pandas as pd
 
 
 def translation_dict():
-    original_halias_data = pd.read_csv("data\localization.csv",
+    original_halias_data = pd.read_csv("data/localization.csv",
                                        usecols=[0, 2], encoding="mac_roman", sep=";")
     bird_species_fin = [bird for bird in
-                        pd.read_csv("data\haliasdata-2010-2019_new.csv",
+                        pd.read_csv("data/haliasdata-2010-2019_new.csv",
                                     index_col=0).fillna(0)]
 
     list_of_names_tuples = []
