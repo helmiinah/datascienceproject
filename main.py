@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.param_functions import File
 from fastapi.templating import Jinja2Templates
 from requests.api import get
-from starlette.responses import HTMLResponse
+from starlette.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 import pandas as pd
 from random_forest import predict_birds, get_star_bins
@@ -18,6 +18,7 @@ star_bins = get_star_bins()
 max_birds = predictions.apply(lambda s: s.abs().nlargest(3).index.tolist(), axis=1)
 max_count = predictions.max().max()
 translations = translation_dict()
+favicon_path = "static/favicon.ico"
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -83,3 +84,8 @@ async def root(request: Request):
                                                      "bird_list": bird_list,
                                                      "star_rating": star_rating,
                                                      "translations": translations})
+
+
+@app.get('/favicon.ico')
+async def favicon():
+    return FileResponse(favicon_path)
