@@ -26,13 +26,13 @@
             }
 
             .float-child-left {
-                width: 40%;
+                width: 37%;
                 float: left;
                 padding: 10px;
                 margin: auto;
             } 
             .float-child-right {
-                width: 50%;
+                width: 55%;
                 float: right;
                 padding: 10px;
                 margin: auto;
@@ -100,7 +100,11 @@
             {% endif %}
             <div class="float-container">
                 <div class="float-child-left">
-                    <h4>Found predictions for {{bird_number}} birds</h4>
+                    {% if bird_number == 0 %}
+                        <h4 style="color: rgb(161, 0, 0);">Something went wrong and 0 birds were found! Try refreshing the page.</h4>
+                    {% else %}
+                        <h4>Found predictions for {{bird_number}} birds</h4>
+                    {% endif %}
                     <div class="dropdown">
                         <button class="dropbtn">Select a bird</button>
                         <div class="dropdown-content">
@@ -109,13 +113,13 @@
                             {%endfor%}
                         </div>
                       </div>
-                      <img id="bird_plot" src="../static/plots/haapana_plot.png" width="100%" height="55%" style="display: none; margin: auto;">
+                      <img id="bird_plot" src="../static/plots/haapana_plot.png" width="100%" height="50%" style="display: none; margin: auto;">
                 </div>
             
                 <div class="float-child-right">
                     <div>
                         <h4>You are most likely to see these migratory birds in the following days:</h4>
-                        <img src="../static/plots/default_plot.png" width="100%" height="65%">
+                        <img src="../static/plots/default_plot.png" width="101%" height="70%">
                     </div>
                 </div>
             </div>

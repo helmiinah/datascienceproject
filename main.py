@@ -25,14 +25,14 @@ bird_list = []
 
 def generate_default_plot(predictions, max_birds, max_count, translations):
     colors=["#264a0d", "#3c7812", "#5cad23"]
-
+    plt.figure(figsize=(9,7))
     for i, row in enumerate(predictions.itertuples()):
         birds = max_birds.loc[row[0]]
         bird_series = predictions.loc[row[0]][birds]
         y_pos = range(len(bird_series.index))
         plt.subplot(1, 3, i+1)
         plt.bar(bird_series.index, height=bird_series, color=colors[i])
-        plt.xticks(y_pos, [b.capitalize() for b in list(bird_series.index)], rotation=40)
+        plt.xticks(y_pos, [f"{b.capitalize()} /\n {translations[b]}" for b in list(bird_series.index)], rotation=40)
         plt.ylim(0, max_count+int(max_count/8))
         plt.title(row[0].strftime("%d-%m-%Y"))
         if i > 0:
