@@ -101,7 +101,7 @@
             <div class="float-container">
                 <div class="float-child-left">
                     {% if bird_number == 0 %}
-                        <h4 style="color: rgb(161, 0, 0);">Something went wrong and 0 birds were found! Try refreshing the page.</h4>
+                        <h4 style="color: rgb(161, 0, 0);">Something went wrong and 0 birds were found! Try refreshing the page after a few seconds.</h4>
                     {% else %}
                         <h4>Found predictions for {{bird_number}} birds</h4>
                     {% endif %}
@@ -113,7 +113,7 @@
                             {%endfor%}
                         </div>
                       </div>
-                      <img id="bird_plot" src="../static/plots/haapana_plot.png" width="100%" height="50%" style="display: none; margin: auto;">
+                      <img id="bird_plot" src="../static/plots/default_plot.png" width="100%" height="50%" style="display: none; margin: auto;">
                 </div>
             
                 <div class="float-child-right">

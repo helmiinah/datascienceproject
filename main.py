@@ -56,7 +56,7 @@ def generate_all_plots(predictions, translations):
         bird_toplot = bird_data.rename(lambda x: x.strftime("%d-%m-%Y"))
         plot_bird = bird_toplot.plot.bar(rot=0, color=["#264a0d", "#3c7812", "#5cad23"], title=f"{bird.capitalize()} / {translations[bird]}")
         plt.savefig(f'./static/plots/{bird}_plot.png', transparent=True)
-    plt.close()
+        plt.close()
 
 
 def get_star_rating(predictions, star_bins):
